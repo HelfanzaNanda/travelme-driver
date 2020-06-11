@@ -11,9 +11,11 @@ data class Driver(
     @SerializedName("sim") var sim: String? = null,
     @SerializedName("name") var name: String? = null,
     @SerializedName("gender") var gender: String? = null,
+    @SerializedName("api_token") var token: String? = null,
     @SerializedName("email") var email: String? = null,
     @SerializedName("avatar") var avatar: String? = null,
     @SerializedName("address") var address: String? = null,
     @SerializedName("telephone") var telp: String? = null,
-    @SerializedName("active") var active : Boolean? = false
+    @SerializedName("active") var active : Boolean? = false,
+    @SerializedName("is_tegal") var is_tegal : Boolean? = false
 ) : Parcelable

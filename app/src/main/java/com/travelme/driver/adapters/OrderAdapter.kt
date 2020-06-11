@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.travelme.driver.R
 import com.travelme.driver.models.Order
+import kotlinx.android.synthetic.main.item_order.view.*
 
 class OrderAdapter(private var orders : MutableList<Order>, private var context: Context)
     : RecyclerView.Adapter<OrderAdapter.ViewHolder>(){
@@ -20,8 +21,18 @@ class OrderAdapter(private var orders : MutableList<Order>, private var context:
 
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         fun bind(order: Order, context: Context){
-
+            with(itemView){
+                txt_name_user.text = order.user.name
+                txt_pickup_point_user.text = order.pickup_point
+                txt_destination_point_user.text = order.destination_point
+            }
         }
+    }
+
+    fun changelist(c : List<Order>){
+        orders.clear()
+        orders.addAll(c)
+        notifyDataSetChanged()
     }
 
 }

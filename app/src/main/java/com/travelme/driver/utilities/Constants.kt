@@ -8,7 +8,7 @@ import java.util.*
 class Constants {
     companion object{
         val END_POINT = "https://travelme-project.herokuapp.com/api/"
-        //val token = "Bearer EiBxBgjt1afSMsvFcoCLoNxLmxWwt4hA4FPO2JVdvjj27gzMh2TTxFwxGmBmgFLz45OF9hkFX2F9oGni"
+        val token = "Bearer EiBxBgjt1afSMsvFcoCLoNxLmxWwt4hA4FPO2JVdvjj27gzMh2TTxFwxGmBmgFLz45OF9hkFX2F9oGni"
 
 
         fun getToken(c : Context) : String {
