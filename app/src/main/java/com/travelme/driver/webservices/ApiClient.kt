@@ -52,4 +52,9 @@ interface ApiService{
         @Field("email") email : String,
         @Field("password") password : String
     ) : Call<WrappedResponse<Driver>>
+
+    @GET("driver/profile")
+    fun profile(
+        @Header("Authorization") token : String
+    ) : Call<WrappedResponse<Driver>>
 }

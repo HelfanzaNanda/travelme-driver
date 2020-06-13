@@ -14,13 +14,13 @@
 
     <fragment
         android:id="@+id/navigation_maps"
-        android:name="com.travelme.driver.fragments.MapsFragment"
+        android:name="com.travelme.driver.fragments.maps_fragment.MapsFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_maps" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.travelme.driver.fragments.ProfileFragment"
+        android:name="com.travelme.driver.fragments.profile_fragment.ProfileFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_profile" />
 </navigation>

@@ -28,4 +28,27 @@ class DriverRepository (private val api : ApiService){
 
         })
     }
+
+    fun profile(token : String, result : (Driver?, Error?)-> Unit){
+        api.profile(token).enqueue(object : Callback<WrappedResponse<Driver>>{
+            override fun onFailure(call: Call<WrappedResponse<Driver>>, t: Throwable) {
+                result(null, Error(t.message))
+            }
+
+            override fun onResponse(call: Call<WrappedResponse<Driver>>, response: Response<WrappedResponse<Driver>>) {
+                if (response.isSuccessful){
+                    val body = response.body()
+                    if (body?.status!!){
+                        val data = body.data
+                        result(data, null)
+                    }else{
+                        result(null, Error())
+                    }
+                }else{
+                    result(null, Error(response.message()))
+                }
+            }
+
+        })
+    }
 }

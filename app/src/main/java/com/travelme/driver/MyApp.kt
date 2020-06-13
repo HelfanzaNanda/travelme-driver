@@ -3,6 +3,8 @@ package com.travelme.driver
 import android.app.Application
 import com.travelme.driver.activities.login_activity.LoginViewModel
 import com.travelme.driver.fragments.home_fragment.OrderFragmentViewModel
+import com.travelme.driver.fragments.maps_fragment.MapsViewModel
+import com.travelme.driver.fragments.profile_fragment.ProfileViewModel
 import com.travelme.driver.repositories.DriverRepository
 import com.travelme.driver.repositories.OrderRepository
 import com.travelme.driver.webservices.ApiClient
@@ -34,4 +36,6 @@ val repositoryModules = module {
 val viewModelModules = module {
     viewModel { OrderFragmentViewModel(get()) }
     viewModel { LoginViewModel(get()) }
+    viewModel { ProfileViewModel(get()) }
+    viewModel { MapsViewModel(get()) }
 }

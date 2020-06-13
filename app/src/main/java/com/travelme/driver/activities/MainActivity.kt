@@ -7,7 +7,8 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.travelme.driver.R
 import com.travelme.driver.fragments.home_fragment.HomeFragment
-import com.travelme.driver.fragments.ProfileFragment
+import com.travelme.driver.fragments.profile_fragment.ProfileFragment
+import com.travelme.driver.fragments.maps_fragment.MapsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -38,12 +39,12 @@ class MainActivity : AppCompatActivity() {
                     navStatus = 0
                 }
             }
-            /*R.id.navigation_maps -> {
+            R.id.navigation_maps -> {
                 if(navStatus != 1){
                     fragment = MapsFragment()
                     navStatus = 1
                 }
-            }*/
+            }
             R.id.navigation_profile -> {
                 if(navStatus != 2){
                     fragment = ProfileFragment()

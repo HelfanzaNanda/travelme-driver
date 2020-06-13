@@ -39,11 +39,11 @@ class HomeFragment : Fragment(R.layout.fragment_home){
         when(it){
             is OrderFragmentState.IsLoading -> {
                 if (it.state){
-                    pb_home.visibility = View.GONE
-                    pb_home.isIndeterminate = false
-                }else{
                     pb_home.visibility = View.VISIBLE
                     pb_home.isIndeterminate = true
+                }else{
+                    pb_home.visibility = View.GONE
+                    pb_home.isIndeterminate = false
                 }
             }
             is OrderFragmentState.ShowToast -> toast(it.message!!)

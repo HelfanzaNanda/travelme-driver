@@ -9,8 +9,12 @@ import retrofit2.Response
 
 class OrderRepository (private val api : ApiService){
     fun getOrders(token: String, result : (List<Order>?, Error?)-> Unit){
+        println(token)
         api.getOrders(token).enqueue(object : Callback<WrappedListResponse<Order>>{
-            override fun onFailure(call: Call<WrappedListResponse<Order>>, t: Throwable) = result(null, Error(t.message))
+            override fun onFailure(call: Call<WrappedListResponse<Order>>, t: Throwable) {
+                result(null, Error(t.message))
+                println(t.message)
+            }
 
             override fun onResponse(call: Call<WrappedListResponse<Order>>, response: Response<WrappedListResponse<Order>>) {
                 if (response.isSuccessful){

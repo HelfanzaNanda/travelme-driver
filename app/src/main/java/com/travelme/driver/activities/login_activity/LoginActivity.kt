@@ -19,6 +19,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        supportActionBar?.hide()
 
         loginViewModel.listenToState().observer(this@LoginActivity, Observer { handleUI(it) })
         doLogin()
@@ -36,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
             }
             is LoginState.ShowToast -> toast(it.message)
             is LoginState.SuccessLogin -> {
-                Constants.setToken(this@LoginActivity, "Bearer $it")
+                Constants.setToken(this@LoginActivity, "Bearer ${it.token}")
                 startActivity(Intent(this@LoginActivity, MainActivity::class.java)).also { finish() }
             }
             is LoginState.Reset -> {

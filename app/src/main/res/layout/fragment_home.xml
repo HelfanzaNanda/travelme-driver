@@ -5,11 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.github.florent37.shapeofview.shapes.RoundRectView
+        android:id="@+id/shape_of_view"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        app:shape_roundRect_bottomLeftRadius="10dp"
+        app:shape_roundRect_bottomRightRadius="10dp">
+
+        <FrameLayout
+            android:background="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+    </com.github.florent37.shapeofview.shapes.RoundRectView>
+
+    <TextView
+        android:textStyle="bold"
+        android:id="@+id/tv_order_in"
+        android:layout_marginTop="30sp"
+        android:textColor="#FFF"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:text="Pesanan Masuk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/tv_order_in"
         android:id="@+id/rv_home"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <ProgressBar
         android:layout_centerInParent="true"

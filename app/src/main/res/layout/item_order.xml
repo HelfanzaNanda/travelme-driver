@@ -1,29 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.google.android.material.card.MaterialCardView
+    app:cardUseCompatPadding="true"
     android:layout_margin="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:textSize="18sp"
-        android:text="helfanza"
-        android:id="@+id/txt_name_user"
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:textSize="18sp"
-        android:text="helfanza"
-        android:id="@+id/txt_pickup_point_user"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:textSize="18sp"
-        android:text="helfanza"
-        android:id="@+id/txt_destination_point_user"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:text="Nama Pemesan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-</LinearLayout>
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:text="helfanza"
+                android:id="@+id/txt_name_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginBottom="5dp"
+            android:textSize="18sp"
+            android:text="kursi"
+            android:id="@+id/txt_seat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginBottom="5dp"
+            android:textSize="18sp"
+            android:text="Alamat Penjemputan :"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:layout_marginBottom="5dp"
+            android:textSize="18sp"
+            android:text="helfanza"
+            android:id="@+id/txt_pickup_point_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginBottom="5dp"
+            android:textSize="18sp"
+            android:text="Alamat Tujuan :"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginBottom="5dp"
+            android:textSize="18sp"
+            android:text="helfanza"
+            android:id="@+id/txt_destination_point_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

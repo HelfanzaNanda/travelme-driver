@@ -1,4 +1,4 @@
-package com.travelme.driver.activities.extensions
+package com.travelme.driver.extensions
 
 import android.view.View
 
