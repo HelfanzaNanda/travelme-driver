@@ -19,13 +19,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.gson.JsonObject
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
+import com.mapbox.api.directions.v5.models.DirectionsResponse
+import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.api.geocoding.v5.models.CarmenFeature
+import com.mapbox.geojson.Feature
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mapbox.mapboxsdk.location.LocationComponent
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.LocationComponentOptions
 import com.mapbox.mapboxsdk.location.OnCameraTrackingChangedListener
@@ -42,8 +45,11 @@ import com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions
+import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute
+import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute
 import com.travelme.driver.R
-import com.travelme.driver.adapters.BottomSheetMapsAdapter
 import com.travelme.driver.extensions.gone
 import com.travelme.driver.extensions.visible
 import com.travelme.driver.models.Order
@@ -51,12 +57,12 @@ import com.travelme.driver.utilities.Constants
 import kotlinx.android.synthetic.main.bottom_sheet_maps.*
 import kotlinx.android.synthetic.main.fragment_maps.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
-    companion object {
-        const val TOKET = "Bearer blO7QbcV8N7pCUF3mwIrfwQ1OXqnGK9mZ8En2VFXlQZFB6Fqf4rU1R2iFPPQ7k5ymuQwrFs39uwdPYBi"
-    }
 
     private var permissionsManager: PermissionsManager? = null
     private var mapboxMap: MapboxMap? = null
@@ -71,22 +77,25 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     private lateinit var markerManager : MarkerViewManager
     private lateinit var symbolManager : SymbolManager
 
+    private var navigationMapRoute : NavigationMapRoute? = null
+    private var currentRoute: DirectionsRoute? = null
+    private var locationComponent : LocationComponent? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Mapbox.getInstance(requireActivity(), getString(R.string.map_box_access_token))
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mapsViewModel.getOrders(Constants.getToken(requireActivity()))
+        rv_bottom_sheet.apply {
+            adapter = BottomSheetMapsAdapter(mutableListOf(), requireActivity(), mapsViewModel)
+            layoutManager = LinearLayoutManager(requireActivity())
+        }
+        //mapsViewModel.getOrders(Constants.getToken(requireActivity()))
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
-
-        rv_bottom_sheet.apply {
-            adapter = BottomSheetMapsAdapter(mutableListOf(), requireActivity())
-            layoutManager = LinearLayoutManager(requireActivity())
-        }
-        val bottomSheetBehavior = BottomSheetBehavior.from(layoutBottomSheet)
+        BottomSheetBehavior.from(layoutBottomSheet)
         mapsViewModel.listenToState().observer(viewLifecycleOwner, Observer { handleState(it) })
     }
 
@@ -101,6 +110,15 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             }
 
             is MapsState.ShowToast -> toast(it.message)
+            is MapsState.SuccessArrived -> {
+                toast("anda berada di lokasi penjemputan")
+                mapsViewModel.getOrders(Constants.getToken(requireActivity()))
+            }
+
+            is MapsState.SuccessDone -> {
+                toast("anda berada di lokasi tujuan")
+                mapsViewModel.getOrders(Constants.getToken(requireActivity()))
+            }
         }
     }
 
@@ -127,13 +145,30 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         it.map { order ->
             mapboxMap!!.setStyle(Style.MAPBOX_STREETS) { style ->
                 //enabledLocationComponent(style)
-
                 style.addSource(GeoJsonSource(geojsonSourceLayerId))
                 setupLayer(style)
 
                 //pickup point marker
                 addMarkerPickup(LatLng(order.lat_pickup_point!!.toDouble(), order.lng_pickup_point!!.toDouble()), order)
                 addMarkerDestination(LatLng(order.lat_destination_point!!.toDouble(), order.lng_destination_point!!.toDouble()), order)
+
+
+                val originPoint  = Point.fromLngLat(locationComponent!!.lastKnownLocation!!.longitude,
+                    locationComponent!!.lastKnownLocation!!.latitude)
+
+                val destinationPoint  = Point.fromLngLat(order.lng_pickup_point!!.toDouble(), order.lat_pickup_point!!.toDouble())
+
+                val source = style.getSourceAs<GeoJsonSource>(geojsonSourceLayerId)
+                source?.setGeoJson(Feature.fromGeometry(destinationPoint))
+                getRoute(originPoint, destinationPoint)
+
+                btn_start_navigation.setOnClickListener {
+                    val options = NavigationLauncherOptions.builder()
+                        .directionsRoute(currentRoute)
+                        .shouldSimulateRoute(true)
+                        .build()
+                    NavigationLauncher.startNavigation(requireActivity(), options)
+                }
             }
         }
 
@@ -142,7 +177,47 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                 adapter.changelist(it)
             }
         }
+    }
 
+    private fun getRoute(origin: Point, destination : Point){
+        NavigationRoute.builder(requireActivity())
+            .accessToken(getString(R.string.map_box_access_token))
+            .origin(origin)
+            .destination(destination)
+            .build()
+            .getRoute(object : Callback <DirectionsResponse>{
+                override fun onFailure(call: Call<DirectionsResponse>, t: Throwable) {
+                    println("failure : ${t.message}")
+                }
+
+                override fun onResponse(call: Call<DirectionsResponse>, response: Response<DirectionsResponse>) {
+                    if (response.isSuccessful){
+                        val body = response.body()
+                        if (body == null){
+                            println("No routes found, check right user and access token")
+                            return
+                        }else if (body.routes().size == 0){
+                            println("no routes found")
+                            return
+                        }
+                        println("current route : ${response.body()!!.routes().get(0)}")
+
+                        currentRoute = response.body()!!.routes().get(0)
+                        btn_start_navigation.isEnabled = true
+                        btn_start_navigation.setBackgroundResource(R.color.mapboxBlue)
+
+                        if (navigationMapRoute != null){
+                            navigationMapRoute!!.removeRoute()
+                        }else {
+                            navigationMapRoute = NavigationMapRoute(null, mapView, mapboxMap!!, R.style.NavigationMapRoute)
+                        }
+                        navigationMapRoute!!.addRoute(currentRoute)
+                    }else{
+                        println("r : ${response.message()}")
+                    }
+                }
+
+            })
     }
 
     private fun getScreenInfo() : android.graphics.Point{
@@ -192,7 +267,14 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         parent.addView(imageView)
 
         val marker = MarkerView(latlng, parent)
-        markerManager.addMarker(marker)
+
+        if (order.arrived == true){
+            marker.let { markerManager.removeMarker(it) }
+        }else if (order.done == true){
+            marker.let { markerManager.removeMarker(it) }
+        }else{
+            markerManager.addMarker(marker)
+        }
 
     }
 
@@ -230,7 +312,13 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         parent.addView(imageView)
 
         val marker = MarkerView(latlng, parent)
-        markerManager.addMarker(marker)
+        if (order.arrived == true){
+            marker.let { markerManager.removeMarker(it) }
+        }else if (order.done == true){
+            marker.let { markerManager.removeMarker(it) }
+        }else{
+            markerManager.addMarker(marker)
+        }
 
     }
 
@@ -251,18 +339,21 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                 //.foregroundDrawable(R.drawable.mapbox_marker_icon_default)
                 .build()
 
-            val locationComponent = mapboxMap!!.locationComponent
+            locationComponent = mapboxMap!!.locationComponent
             val locationComponentActivationOptions = LocationComponentActivationOptions
                 .builder(requireActivity(), style)
                 .locationComponentOptions(customLocationComponentOptions)
                 .build()
 
-            locationComponent.activateLocationComponent(locationComponentActivationOptions)
-            locationComponent.isLocationComponentEnabled = true
-            locationComponent.cameraMode = CameraMode.TRACKING
-            locationComponent.renderMode = RenderMode.COMPASS
-            locationComponent.addOnLocationClickListener {
-                if (locationComponent.lastKnownLocation != null) {
+            locationComponent!!.activateLocationComponent(locationComponentActivationOptions)
+            locationComponent!!.isLocationComponentEnabled = true
+            locationComponent!!.cameraMode = CameraMode.TRACKING
+            locationComponent!!.renderMode = RenderMode.COMPASS
+            locationComponent!!.addOnLocationClickListener {
+                /*if (locationComponent.lastKnownLocation != null) {
+
+                    origin = Point.fromLngLat(locationComponent.lastKnownLocation!!.longitude, locationComponent.lastKnownLocation!!.latitude)
+
                     toast(
                         resources.getString(
                             R.string.current_location,
@@ -270,9 +361,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                             locationComponent.lastKnownLocation!!.longitude
                         )
                     )
-                }
+                }*/
             }
-            locationComponent.addOnCameraTrackingChangedListener(object :
+            locationComponent!!.addOnCameraTrackingChangedListener(object :
                 OnCameraTrackingChangedListener {
                 override fun onCameraTrackingChanged(currentMode: Int) {
                     toast(currentMode.toString())
@@ -286,8 +377,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             my_location.setOnClickListener {
                 if (!isInTrackingMode) {
                     isInTrackingMode = true
-                    locationComponent.cameraMode = CameraMode.TRACKING
-                    locationComponent.zoomWhileTracking(16.0)
+                    locationComponent!!.cameraMode = CameraMode.TRACKING
+                    locationComponent!!.zoomWhileTracking(16.0)
                     toast(resources.getString(R.string.tracking_enabled))
                 } else {
                     toast(resources.getString(R.string.tracking_already_enabled))
@@ -300,13 +391,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        permissionsManager!!.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) = permissionsManager!!.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-    override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
-        toast(resources.getString(R.string.user_location_permission_explanation))
-    }
+    override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) = toast(resources.getString(R.string.user_location_permission_explanation))
 
     override fun onPermissionResult(granted: Boolean) {
         if (granted) {
@@ -326,6 +413,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     override fun onResume() {
         super.onResume()
         mapView?.onResume()
+        mapsViewModel.getOrders(Constants.getToken(requireActivity()))
     }
 
     override fun onStart() {

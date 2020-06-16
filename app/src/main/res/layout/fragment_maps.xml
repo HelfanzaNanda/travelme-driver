@@ -26,7 +26,9 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.button.MaterialButton
-            android:layout_marginRight="10dp"
+            android:enabled="false"
+            android:background="@color/mapboxGrayLight"
+            android:layout_marginEnd="10dp"
             android:layout_weight="1"
             android:text="mulai navigasi"
             android:id="@+id/btn_start_navigation"

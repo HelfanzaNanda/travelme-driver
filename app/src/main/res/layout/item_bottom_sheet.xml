@@ -99,7 +99,9 @@
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.button.MaterialButton
-            android:text="saya sudah di lokasi penjemputan anda"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:visibility="gone"
+            android:text="saya sudah di lokasi tujuan anda"
             android:id="@+id/btn_done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

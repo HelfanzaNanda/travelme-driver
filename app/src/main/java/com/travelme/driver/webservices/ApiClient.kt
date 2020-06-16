@@ -45,6 +45,18 @@ interface ApiService{
     fun getOrders(
         @Header("Authorization") token : String
     ) : Call<WrappedListResponse<Order>>
+    
+    @GET("order/{id}/arrived")
+    fun arrived(
+        @Header("Authorization") token : String,
+        @Path("id") id : Int
+    ) : Call<WrappedResponse<Order>>
+
+    @GET("order/{id}/done")
+    fun done(
+        @Header("Authorization") token : String,
+        @Path("id") id : Int
+    ) : Call<WrappedResponse<Order>>
 
     @FormUrlEncoded
     @POST("driver/login")
