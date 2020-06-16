@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.item_order.view.*
 
 class OrderAdapter(private var orders : MutableList<Order>, private var context: Context)
     : RecyclerView.Adapter<OrderAdapter.ViewHolder>(){
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_order, parent, false))
     }

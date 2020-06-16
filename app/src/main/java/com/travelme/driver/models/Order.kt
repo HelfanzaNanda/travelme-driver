@@ -19,6 +19,8 @@ data class Order(
     @SerializedName("lat_destination_point") var lat_destination_point : String? = null,
     @SerializedName("lng_destination_point") var lng_destination_point : String? = null,
     @SerializedName("status") var status : String? = null,
+    @SerializedName("arrived") var arrived : Boolean? = false,
+    @SerializedName("done") var done : Boolean? = false,
     @SerializedName("user") var user : User,
     @SerializedName("owner") var owner : Owner,
     @SerializedName("departure") var departure : Departure,

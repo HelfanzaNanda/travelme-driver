@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
     app:cardUseCompatPadding="true"
-    android:layout_margin="10dp"
-    android:clickable="true"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:focusable="true">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_margin="10dp"
@@ -26,18 +25,23 @@
                 android:layout_marginBottom="10dp"
                 android:textStyle="bold"
                 android:textSize="18sp"
-                android:text="Nama Pemesan"
+                android:text="helfanza"
+                android:id="@+id/txt_name_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
+            <ImageView
+                android:layout_weight="5"
+                android:src="@drawable/ic_keyboard_arrow_down"
+                android:id="@+id/img_arrow_down"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-            <TextView
-                android:layout_weight="1"
-                android:layout_marginBottom="10dp"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:text="helfanza"
-                android:id="@+id/txt_name_user"
+            <ImageView
+                android:visibility="gone"
+                android:layout_weight="5"
+                android:src="@drawable/ic_keyboard_arrow_up"
+                android:id="@+id/img_arrow_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -52,34 +56,52 @@
             android:layout_height="wrap_content"/>
 
         <TextView
+            android:visibility="gone"
+            android:id="@+id/label_pickup_point"
             android:layout_marginBottom="5dp"
             android:textSize="18sp"
-            android:text="Alamat Penjemputan :"
+            android:text="Alamat Penjemputan : "
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-
         <TextView
-            android:layout_marginBottom="5dp"
-            android:textSize="18sp"
-            android:text="helfanza"
+            android:visibility="gone"
             android:id="@+id/txt_pickup_point_user"
+            android:layout_marginBottom="5dp"
+            android:textSize="18sp"
+            android:text="Alamat Penjemputan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <TextView
+            android:visibility="gone"
+            android:id="@+id/label_destination_point"
             android:layout_marginBottom="5dp"
             android:textSize="18sp"
-            android:text="Alamat Tujuan :"
+            android:text="Alamat Tujuan : "
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:layout_marginBottom="5dp"
-            android:textSize="18sp"
-            android:text="helfanza"
+            android:visibility="gone"
             android:id="@+id/txt_destination_point_user"
+            android:layout_marginBottom="5dp"
+            android:textSize="18sp"
+            android:text="Alamat Penjemputan"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:text="saya sudah di lokasi penjemputan anda"
+            android:id="@+id/btn_arrived"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:text="saya sudah di lokasi penjemputan anda"
+            android:id="@+id/btn_done"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
