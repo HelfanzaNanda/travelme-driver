@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.login_activity.LoginActivity">
+    tools:context=".activities.login.LoginActivity">
 
     <com.github.florent37.shapeofview.shapes.RoundRectView
         android:id="@+id/shape_of_view"

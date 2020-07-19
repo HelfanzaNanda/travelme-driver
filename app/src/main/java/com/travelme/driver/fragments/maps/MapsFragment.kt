@@ -1,4 +1,4 @@
-package com.travelme.driver.fragments.maps_fragment
+package com.travelme.driver.fragments.maps
 
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -12,7 +12,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.NonNull
-import androidx.collection.LongSparseArray
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
@@ -24,9 +23,9 @@ import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.api.directions.v5.models.DirectionsResponse
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.api.geocoding.v5.models.CarmenFeature
-import com.mapbox.geojson.Feature
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponent
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
@@ -73,6 +72,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     private var destination: CarmenFeature? = null
     private val symbolIconId : String = "symbolIconId"
     private val geojsonSourceLayerId : String = "geojsonSourceLayerId"
+    private val pulauJawa: LatLng = LatLng(-7.614529, 110.712247)
 
     private lateinit var markerManager : MarkerViewManager
     private lateinit var symbolManager : SymbolManager
@@ -91,12 +91,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             adapter = BottomSheetMapsAdapter(mutableListOf(), requireActivity(), mapsViewModel)
             layoutManager = LinearLayoutManager(requireActivity())
         }
-        //mapsViewModel.getOrders(Constants.getToken(requireActivity()))
-        mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync(this)
 
-        BottomSheetBehavior.from(layoutBottomSheet)
+        mapView.onCreate(savedInstanceState)
         mapsViewModel.listenToState().observer(viewLifecycleOwner, Observer { handleState(it) })
+        mapView.getMapAsync(this)
+        BottomSheetBehavior.from(layoutBottomSheet)
     }
 
     private fun handleState(it : MapsState){
@@ -124,10 +123,17 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
     override fun onMapReady(mapboxMap: MapboxMap) {
         this.mapboxMap = mapboxMap
+        mapboxMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pulauJawa, 6.0))
+//        mapboxMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+//            LatLng(locationComponent!!.lastKnownLocation!!.latitude,
+//                locationComponent!!.lastKnownLocation!!.longitude), 8.5))
         mapboxMap.setStyle(Style.MAPBOX_STREETS) { style ->
-            symbolManager = SymbolManager(mapView, mapboxMap, style)
-            symbolManager.iconAllowOverlap = true
-            symbolManager.textAllowOverlap = true
+//            symbolManager = SymbolManager(mapView, mapboxMap, style)
+//            symbolManager.iconAllowOverlap = true
+//            symbolManager.textAllowOverlap = true
+
+            style.addSource(GeoJsonSource(geojsonSourceLayerId))
+            setupLayer(style)
 
             enabledLocationComponent(style)
             markerManager = MarkerViewManager(mapView, mapboxMap)
@@ -135,42 +141,46 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         }
     }
 
-    private fun handleOrder(it: List<Order>) {
-        val symbols = mutableListOf<Symbol>()
-        val symbolArray: LongSparseArray<Symbol> = symbolManager.annotations
-        for (i in 0 until symbolArray.size()) {
-            symbols.add(symbolArray.valueAt(i))
+    private fun handleOrder(it: List<Order>){
+//        val symbols = mutableListOf<Symbol>()
+//        val symbolArray: LongSparseArray<Symbol> = symbolManager.annotations
+//        for (i in 0 until symbolArray.size()) {
+//            symbols.add(symbolArray.valueAt(i))
+//        }
+//        symbolManager.delete(symbols)
+        it.forEach { order ->
+            println(order.arrived)
+            addMarker(LatLng(order.lat_pickup_point!!.toDouble(), order.lng_pickup_point!!.toDouble()), order, order.pickup_point!!)
+            addMarker(LatLng(order.lat_destination_point!!.toDouble(), order.lng_destination_point!!.toDouble()), order, order.destination_point!!)
+//            mapboxMap!!.setStyle(Style.MAPBOX_STREETS) { style ->
+//                //enabledLocationComponent(style)
+//                style.addSource(GeoJsonSource(geojsonSourceLayerId))
+//                setupLayer(style)
+//
+//                //pickup point marker
+//                toast("ashiap")
+//                println("shiap")
+//
+//
+//
+//                val originPoint  = Point.fromLngLat(locationComponent!!.lastKnownLocation!!.longitude,
+//                    locationComponent!!.lastKnownLocation!!.latitude)
+//
+//                val destinationPoint  = Point.fromLngLat(order.lng_pickup_point!!.toDouble(), order.lat_pickup_point!!.toDouble())
+//
+//                val source = style.getSourceAs<GeoJsonSource>(geojsonSourceLayerId)
+//                source?.setGeoJson(Feature.fromGeometry(destinationPoint))
+//                getRoute(originPoint, destinationPoint)
+//
+//                btn_start_navigation.setOnClickListener {
+//                    val options = NavigationLauncherOptions.builder()
+//                        .directionsRoute(currentRoute)
+//                        .shouldSimulateRoute(true)
+//                        .build()
+//                    NavigationLauncher.startNavigation(requireActivity(), options)
+//                }
+//            }
         }
-        symbolManager.delete(symbols)
-        it.map { order ->
-            mapboxMap!!.setStyle(Style.MAPBOX_STREETS) { style ->
-                //enabledLocationComponent(style)
-                style.addSource(GeoJsonSource(geojsonSourceLayerId))
-                setupLayer(style)
-
-                //pickup point marker
-                addMarkerPickup(LatLng(order.lat_pickup_point!!.toDouble(), order.lng_pickup_point!!.toDouble()), order)
-                addMarkerDestination(LatLng(order.lat_destination_point!!.toDouble(), order.lng_destination_point!!.toDouble()), order)
-
-                val originPoint  = Point.fromLngLat(locationComponent!!.lastKnownLocation!!.longitude,
-                    locationComponent!!.lastKnownLocation!!.latitude)
-
-                val destinationPoint  = Point.fromLngLat(order.lng_pickup_point!!.toDouble(), order.lat_pickup_point!!.toDouble())
-
-                val source = style.getSourceAs<GeoJsonSource>(geojsonSourceLayerId)
-                source?.setGeoJson(Feature.fromGeometry(destinationPoint))
-                getRoute(originPoint, destinationPoint)
-
-                btn_start_navigation.setOnClickListener {
-                    val options = NavigationLauncherOptions.builder()
-                        .directionsRoute(currentRoute)
-                        .shouldSimulateRoute(true)
-                        .build()
-                    NavigationLauncher.startNavigation(requireActivity(), options)
-                }
-            }
-        }
-
         rv_bottom_sheet.adapter?.let {adapter ->
             if (adapter is BottomSheetMapsAdapter){
                 adapter.changelist(it)
@@ -202,7 +212,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                         println("current route : ${response.body()!!.routes().get(0)}")
 
                         currentRoute = response.body()!!.routes().get(0)
-                        btn_start_navigation.isEnabled = true
+                        //btn_start_navigation.isEnabled = true
                         btn_start_navigation.setBackgroundResource(R.color.mapboxBlue)
 
                         if (navigationMapRoute != null){
@@ -232,7 +242,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         return size
     }
 
-    private fun addMarkerPickup(latlng: LatLng, order: Order){
+    private fun addMarker(latlng: LatLng, order: Order, addressName : String){
         val parent = LinearLayout(requireActivity())
         parent.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         parent.orientation = LinearLayout.VERTICAL
@@ -258,7 +268,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         val orderId = TextView(requireActivity()).apply {
             layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             maxLines = 1
-            text = order.pickup_point.toString()
+            text = addressName
         }
         rel.addView(orderId)
         rel.addView(user)
@@ -267,50 +277,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
         val marker = MarkerView(latlng, parent)
 
-        if (order.arrived == true){
-            marker.let { markerManager.removeMarker(it) }
-        }else if (order.done == true){
-            marker.let { markerManager.removeMarker(it) }
-        }else{
-            markerManager.addMarker(marker)
-        }
-
-    }
-
-    private fun addMarkerDestination(latlng: LatLng, order: Order){
-        val parent = LinearLayout(requireActivity())
-        parent.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        parent.orientation = LinearLayout.VERTICAL
-
-        val size = getScreenInfo()
-        val imageView = ImageView(requireActivity()).apply {
-            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT , ViewGroup.LayoutParams.WRAP_CONTENT)
-            setImageBitmap(BitmapFactory.decodeResource(requireActivity().resources, R.drawable.mapbox_marker_icon_default))
-        }
-
-        val rel = LinearLayout(requireActivity())
-        rel.orientation = LinearLayout.VERTICAL
-        rel.layoutParams = ViewGroup.LayoutParams(size.x/2, ViewGroup.LayoutParams.WRAP_CONTENT)
-        rel.setPadding(16)
-        rel.setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.mapboxGrayLight))
-
-        val user = TextView(requireActivity()).apply {
-            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            maxLines = 1
-            text = order.user.name.toString()
-            setTextColor(ContextCompat.getColor(requireActivity(),R.color.colorPrimary))
-        }
-        val orderId = TextView(requireActivity()).apply {
-            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            maxLines = 1
-            text = order.destination_point.toString()
-        }
-        rel.addView(orderId)
-        rel.addView(user)
-        parent.addView(rel)
-        parent.addView(imageView)
-
-        val marker = MarkerView(latlng, parent)
         if (order.arrived == true){
             marker.let { markerManager.removeMarker(it) }
         }else if (order.done == true){
@@ -348,42 +314,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             locationComponent!!.isLocationComponentEnabled = true
             locationComponent!!.cameraMode = CameraMode.TRACKING
             locationComponent!!.renderMode = RenderMode.COMPASS
-            locationComponent!!.addOnLocationClickListener {
-                /*if (locationComponent.lastKnownLocation != null) {
-
-                    origin = Point.fromLngLat(locationComponent.lastKnownLocation!!.longitude, locationComponent.lastKnownLocation!!.latitude)
-
-                    toast(
-                        resources.getString(
-                            R.string.current_location,
-                            locationComponent.lastKnownLocation!!.latitude,
-                            locationComponent.lastKnownLocation!!.longitude
-                        )
-                    )
-                }*/
-            }
-            locationComponent!!.addOnCameraTrackingChangedListener(object :
-                OnCameraTrackingChangedListener {
-                override fun onCameraTrackingChanged(currentMode: Int) {
-                    toast(currentMode.toString())
-                }
-
-                override fun onCameraTrackingDismissed() {
-                    isInTrackingMode = false
-                }
-
-            })
             my_location.setOnClickListener {
-                if (!isInTrackingMode) {
-                    isInTrackingMode = true
-                    locationComponent!!.cameraMode = CameraMode.TRACKING
-                    locationComponent!!.zoomWhileTracking(16.0)
-                    toast(resources.getString(R.string.tracking_enabled))
-                } else {
-                    toast(resources.getString(R.string.tracking_already_enabled))
-                }
+                locationComponent!!.cameraMode = CameraMode.TRACKING
+                locationComponent!!.zoomWhileTracking(16.0)
             }
-
         } else {
             permissionsManager = PermissionsManager(this)
             permissionsManager!!.requestLocationPermissions(requireActivity())
@@ -400,7 +334,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                 enabledLocationComponent(style)
             }
         } else {
-            toast(resources.getString(R.string.user_location_permission_not_granted))
+            //toast(resources.getString(R.string.user_location_permission_not_granted))
             requireActivity().finish()
         }
     }
@@ -411,8 +345,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     //lifecycle mapbox
     override fun onResume() {
         super.onResume()
-        mapView?.onResume()
         mapsViewModel.getOrders(Constants.getToken(requireActivity()))
+        mapView?.onResume()
     }
 
     override fun onStart() {

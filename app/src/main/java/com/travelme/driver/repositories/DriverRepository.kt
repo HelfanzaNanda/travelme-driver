@@ -51,4 +51,48 @@ class DriverRepository (private val api : ApiService){
 
         })
     }
+
+    fun domicile(token : String, result: (Driver?, Error?) -> Unit){
+        api.domicile(token).enqueue(object : Callback<WrappedResponse<Driver>>{
+            override fun onFailure(call: Call<WrappedResponse<Driver>>, t: Throwable) {
+                result(null, Error(t.message))
+            }
+
+            override fun onResponse(call: Call<WrappedResponse<Driver>>, response: Response<WrappedResponse<Driver>>) {
+                if (response.isSuccessful){
+                    val body = response.body()
+                    if (body?.status!!){
+                        result(body.data, null)
+                    }else{
+                        result(null, Error(body.message))
+                    }
+                }else{
+                    result(null, Error(response.message()))
+                }
+            }
+
+        })
+    }
+
+    fun goOff(token : String, result: (Driver?, Error?) -> Unit){
+        api.goOff(token).enqueue(object : Callback<WrappedResponse<Driver>>{
+            override fun onFailure(call: Call<WrappedResponse<Driver>>, t: Throwable) {
+                result(null, Error(t.message))
+            }
+
+            override fun onResponse(call: Call<WrappedResponse<Driver>>, response: Response<WrappedResponse<Driver>>) {
+                if (response.isSuccessful){
+                    val body = response.body()
+                    if (body?.status!!){
+                        result(body.data, null)
+                    }else{
+                        result(null, Error(body.message))
+                    }
+                }else{
+                    result(null, Error(response.message()))
+                }
+            }
+
+        })
+    }
 }

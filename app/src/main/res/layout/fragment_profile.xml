@@ -137,11 +137,17 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"/>
 
-
                             </LinearLayout>
 
                         </LinearLayout>
 
+                        <TextView
+                            android:visibility="gone"
+                            android:id="@+id/txt_domicile"
+                            android:layout_marginTop="20sp"
+                            android:textSize="20sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -149,8 +155,21 @@
 
         </RelativeLayout>
 
-
     </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:visibility="gone"
+        android:text="saya mau berangkat"
+        android:padding="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        app:cornerRadius="20dp"
+        android:id="@+id/btn_domicile"
+        android:layout_above="@id/btn_edit_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <com.google.android.material.button.MaterialButton
         android:padding="10dp"
         app:cornerRadius="20dp"

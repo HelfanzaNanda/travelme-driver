@@ -17,5 +17,7 @@ data class Driver(
     @SerializedName("address") var address: String? = null,
     @SerializedName("telephone") var telp: String? = null,
     @SerializedName("active") var active : Boolean? = false,
-    @SerializedName("is_tegal") var is_tegal : Boolean? = false
+    @SerializedName("location") var location : String? = null,
+    @SerializedName("owner") var owner : Owner,
+    @SerializedName("car") var car : Car
 ) : Parcelable

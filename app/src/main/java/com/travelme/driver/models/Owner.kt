@@ -14,5 +14,6 @@ data class Owner(
     @SerializedName("email") var email: String? = null,
     @SerializedName("photo") var photo: String? = null,
     @SerializedName("telephone") var telp: String? = null,
+    @SerializedName("domicile") var domicile : String? = null,
     @SerializedName("cars") var cars: List<Car> = mutableListOf()
 ) : Parcelable

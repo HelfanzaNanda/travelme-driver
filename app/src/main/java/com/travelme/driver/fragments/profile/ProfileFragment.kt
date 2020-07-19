@@ -1,5 +1,6 @@
-package com.travelme.driver.fragments.profile_fragment
+package com.travelme.driver.fragments.profile
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -29,20 +30,34 @@ class ProfileFragment : Fragment(R.layout.fragment_profile){
             is ProfileState.IsLoading -> {
                 if (it.state){
                     pb_profile.visible()
-                    pb_profile.isIndeterminate = true
                 }else{
                     pb_profile.gone()
-                    pb_profile.isIndeterminate = true
                 }
             }
             is ProfileState.ShowToast -> toast(it.message)
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun handleDriver(it : Driver){
         txt_name.text = it.name
         txt_email.text = it.email
         txt_telp.text = it.telp
+        txt_domicile.text = "saya berada di ${it.location}"
+
+//        if (it.location == ){
+//
+//            btn_domicile.text = "saya mau berangkat"
+//            btn_domicile.setOnClickListener {
+//                profileViewModel.goOff(Constants.getToken(requireActivity()))
+//            }
+//        }else{
+//            txt_domicile.text = "saya tidak berada di ${it.owner.domicile}"
+//            btn_domicile.text = "saya berada di ${it.owner.domicile}"
+//            btn_domicile.setOnClickListener {
+//                profileViewModel.domicile(Constants.getToken(requireActivity()))
+//            }
+//        }
     }
 
     override fun onResume() {

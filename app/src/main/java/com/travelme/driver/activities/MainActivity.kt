@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.travelme.driver.R
-import com.travelme.driver.fragments.home_fragment.HomeFragment
-import com.travelme.driver.fragments.profile_fragment.ProfileFragment
-import com.travelme.driver.fragments.maps_fragment.MapsFragment
+import com.travelme.driver.fragments.home.HomeFragment
+import com.travelme.driver.fragments.profile.ProfileFragment
+import com.travelme.driver.fragments.maps.MapsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 

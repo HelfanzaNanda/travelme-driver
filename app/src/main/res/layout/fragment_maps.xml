@@ -26,6 +26,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.button.MaterialButton
+            android:visibility="gone"
             android:enabled="false"
             android:background="@color/mapboxGrayLight"
             android:layout_marginEnd="10dp"
@@ -37,6 +38,7 @@
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+
             android:id="@+id/my_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

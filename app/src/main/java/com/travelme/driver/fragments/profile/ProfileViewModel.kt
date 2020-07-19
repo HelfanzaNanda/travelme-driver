@@ -1,4 +1,4 @@
-package com.travelme.driver.fragments.profile_fragment
+package com.travelme.driver.fragments.profile
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,6 +20,25 @@ class ProfileViewModel (private val driverRepository: DriverRepository) : ViewMo
             hideLoading()
             error?.let { it.message?.let { message-> toast(message) }}
             resultDriver?.let { driver.postValue(it) }
+        }
+    }
+
+    fun domicile(token: String){
+        setLoading()
+        driverRepository.domicile(token){resultDriver, error ->
+            hideLoading()
+            error?.let { it.message?.let { message->toast(message) } }
+            resultDriver?.let { profile(token) }
+        }
+    }
+
+
+    fun goOff(token: String){
+        setLoading()
+        driverRepository.goOff(token){resultDriver, error ->
+            hideLoading()
+            error?.let { it.message?.let { message->toast(message) } }
+            resultDriver?.let { profile(token) }
         }
     }
 
