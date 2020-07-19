@@ -152,7 +152,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                 addMarkerPickup(LatLng(order.lat_pickup_point!!.toDouble(), order.lng_pickup_point!!.toDouble()), order)
                 addMarkerDestination(LatLng(order.lat_destination_point!!.toDouble(), order.lng_destination_point!!.toDouble()), order)
 
-
                 val originPoint  = Point.fromLngLat(locationComponent!!.lastKnownLocation!!.longitude,
                     locationComponent!!.lastKnownLocation!!.latitude)
 
