@@ -2,6 +2,7 @@ package com.travelme.driver.webservices
 
 import com.travelme.driver.models.Driver
 import com.travelme.driver.models.Order
+import com.travelme.driver.models.OrderForSchedulle
 import com.travelme.driver.utilities.Constants
 import com.travelme.driver.utilities.WrappedListResponse
 import com.travelme.driver.utilities.WrappedResponse
@@ -45,6 +46,11 @@ interface ApiService{
     fun getOrders(
         @Header("Authorization") token : String
     ) : Call<WrappedListResponse<Order>>
+
+    @GET("order/driver/show")
+    fun getOrder(
+        @Header("Authorization") token : String
+    ) : Call<WrappedResponse<OrderForSchedulle>>
     
     @GET("order/{id}/arrived")
     fun arrived(
@@ -67,6 +73,16 @@ interface ApiService{
 
     @GET("driver/profile")
     fun profile(
+        @Header("Authorization") token : String
+    ) : Call<WrappedResponse<Driver>>
+
+    @GET("driver/domicile")
+    fun domicile(
+        @Header("Authorization") token : String
+    ) : Call<WrappedResponse<Driver>>
+
+    @GET("driver/gooff")
+    fun goOff(
         @Header("Authorization") token : String
     ) : Call<WrappedResponse<Driver>>
 }

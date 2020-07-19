@@ -1,6 +1,5 @@
-package com.travelme.driver.activities.login_activity
+package com.travelme.driver.activities.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.travelme.driver.repositories.DriverRepository
 import com.travelme.driver.utilities.Constants

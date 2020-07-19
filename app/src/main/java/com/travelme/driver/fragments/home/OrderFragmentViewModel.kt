@@ -1,14 +1,16 @@
-package com.travelme.driver.fragments.home_fragment
+package com.travelme.driver.fragments.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.travelme.driver.models.Order
+import com.travelme.driver.models.OrderForSchedulle
 import com.travelme.driver.repositories.OrderRepository
 import com.travelme.driver.utilities.SingleLiveEvent
 
 class OrderFragmentViewModel (private val orderRepository: OrderRepository) : ViewModel(){
 
     private var orders = MutableLiveData<List<Order>>()
+    private var order = MutableLiveData<OrderForSchedulle>()
     private val state : SingleLiveEvent<OrderFragmentState> = SingleLiveEvent()
 
     private fun setLoading() { state.value = OrderFragmentState.IsLoading(true) }
@@ -24,7 +26,20 @@ class OrderFragmentViewModel (private val orderRepository: OrderRepository) : Vi
         }
     }
 
+    fun getOrder(token : String){
+        setLoading()
+        orderRepository.getOrder(token){resultOrder, error ->
+            hideLoading()
+            error?.let { it.message?.let { message->toast(message) } }
+            resultOrder?.let {
+                order.postValue(it)
+                println(it)
+            }
+        }
+    }
+
     fun listenToOrders() = orders
+    fun listenToOrder() = order
     fun listenToState() = state
 
 }

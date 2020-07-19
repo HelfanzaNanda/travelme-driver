@@ -1,4 +1,4 @@
-package com.travelme.driver.activities.update_profile_activity
+package com.travelme.driver.activities.update_profile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

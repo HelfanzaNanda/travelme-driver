@@ -1,4 +1,4 @@
-package com.travelme.driver.activities.login_activity
+package com.travelme.driver.activities.login
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

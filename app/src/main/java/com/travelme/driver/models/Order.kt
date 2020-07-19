@@ -27,3 +27,13 @@ data class Order(
     @SerializedName("driver") var driver : Driver,
     @SerializedName("car") var car : Car
 ) : Parcelable
+
+@Parcelize
+data class OrderForSchedulle(
+    @SerializedName("id") var id: Int? = null,
+    @SerializedName("date") var date: String? = null,
+    @SerializedName("hour") var hour: String? = null,
+    //@SerializedName("total_seat") var total_seat : Int? = null,
+    @SerializedName("total_user") var total_user : Int? = null,
+    @SerializedName("departure") var departure : Departure
+) : Parcelable

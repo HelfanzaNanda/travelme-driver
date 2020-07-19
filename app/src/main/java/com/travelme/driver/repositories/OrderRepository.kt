@@ -1,6 +1,7 @@
 package com.travelme.driver.repositories
 
 import com.travelme.driver.models.Order
+import com.travelme.driver.models.OrderForSchedulle
 import com.travelme.driver.utilities.WrappedListResponse
 import com.travelme.driver.utilities.WrappedResponse
 import com.travelme.driver.webservices.ApiService
@@ -21,6 +22,31 @@ class OrderRepository (private val api : ApiService){
                     if (body?.status!!){
                         val data = body.data
                         result(data, null)
+                    }else{
+                        result(null, Error())
+                    }
+                }else{
+                    result(null, Error(response.message()))
+                }
+            }
+
+        })
+    }
+
+    fun getOrder(token : String, result : (OrderForSchedulle?, Error?)->Unit){
+        api.getOrder(token).enqueue(object : Callback<WrappedResponse<OrderForSchedulle>>{
+            override fun onFailure(call: Call<WrappedResponse<OrderForSchedulle>>, t: Throwable) {
+                result(null, Error(t.message))
+            }
+
+            override fun onResponse(
+                call: Call<WrappedResponse<OrderForSchedulle>>,
+                response: Response<WrappedResponse<OrderForSchedulle>>
+            ) {
+                if (response.isSuccessful){
+                    val body = response.body()
+                    if (body?.status!!){
+                        result(body.data, null)
                     }else{
                         result(null, Error())
                     }

@@ -1,4 +1,4 @@
-package com.travelme.driver.fragments.maps_fragment
+package com.travelme.driver.fragments.maps
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
