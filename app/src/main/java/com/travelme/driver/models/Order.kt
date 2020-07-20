@@ -33,7 +33,7 @@ data class OrderForSchedulle(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("date") var date: String? = null,
     @SerializedName("hour") var hour: String? = null,
-    //@SerializedName("total_seat") var total_seat : Int? = null,
     @SerializedName("total_user") var total_user : Int? = null,
-    @SerializedName("departure") var departure : Departure
+    @SerializedName("is_order") var is_order : Boolean = false,
+    @SerializedName("departure") var departure : Departure? = null
 ) : Parcelable

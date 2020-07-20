@@ -28,10 +28,17 @@ class HomeFragment : Fragment(R.layout.fragment_home){
 
     @SuppressLint("SetTextI18n")
     private fun handleOrder(it : OrderForSchedulle){
-        txt_date.text = "${it.date}"
-        txt_hour.text = "${it.hour} WIB"
-        txt_departure.text = "${it.departure.from} -> ${it.departure.destination}"
-        txt_total_user.text = "${it.total_user} Orang"
+        if (!it.is_order){
+            linear_schedulle.gone()
+            linear_not_schedulle.visible()
+        }else{
+            linear_not_schedulle.gone()
+            linear_schedulle.visible()
+            txt_date.text = "${it.date}"
+            txt_hour.text = "${it.hour} WIB"
+            txt_departure.text = "${it.departure!!.from} -> ${it.departure!!.destination}"
+            txt_total_user.text = "${it.total_user} Orang"
+        }
     }
 
     private fun handleUI(it : OrderFragmentState){

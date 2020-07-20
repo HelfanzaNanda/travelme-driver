@@ -1,12 +1,14 @@
 package com.travelme.driver.fragments.profile
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.travelme.driver.R
+import com.travelme.driver.activities.login.LoginActivity
 import com.travelme.driver.extensions.gone
 import com.travelme.driver.extensions.visible
 import com.travelme.driver.models.Driver
@@ -23,6 +25,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile){
 
         profileViewModel.listenToState().observer(viewLifecycleOwner, Observer { handleUI(it) })
         profileViewModel.listenToDriver().observe(viewLifecycleOwner, Observer { handleDriver(it) })
+        logout()
     }
 
     private fun handleUI(it : ProfileState){
@@ -35,6 +38,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile){
                 }
             }
             is ProfileState.ShowToast -> toast(it.message)
+        }
+    }
+
+    private fun logout(){
+        btn_logout.setOnClickListener {
+            Constants.clearToken(requireActivity())
+            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+            requireActivity().finish()
         }
     }
 
