@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import java.text.NumberFormat
 import java.util.*
+import java.util.regex.Pattern
 
 class Constants {
     companion object{
@@ -38,5 +39,6 @@ class Constants {
             val formatRupiah: NumberFormat = NumberFormat.getCurrencyInstance(localeID)
             return formatRupiah.format(num)
         }
+        fun isAlpha(name : String) = Pattern.matches("[a-zA-Z]+", name)
     }
 }

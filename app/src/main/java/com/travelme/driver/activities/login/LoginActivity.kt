@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.travelme.driver.R
-import com.travelme.driver.activities.MainActivity
+import com.travelme.driver.ui.main.MainActivity
 import com.travelme.driver.utilities.Constants
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

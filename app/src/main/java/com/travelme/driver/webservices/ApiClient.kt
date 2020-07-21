@@ -6,7 +6,9 @@ import com.travelme.driver.models.OrderForSchedulle
 import com.travelme.driver.utilities.Constants
 import com.travelme.driver.utilities.WrappedListResponse
 import com.travelme.driver.utilities.WrappedResponse
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -85,4 +87,19 @@ interface ApiService{
     fun goOff(
         @Header("Authorization") token : String
     ) : Call<WrappedResponse<Driver>>
+
+    @FormUrlEncoded
+    @POST("driver/profile/update")
+    fun updateProfile(
+        @Header("Authorization") token : String,
+        @Field("name") name : String,
+        @Field("password") pass : String
+    ) : Call<WrappedResponse<Driver>>
+
+    @Multipart
+    @POST("driver/profile/update/photo")
+    fun updatePhotoProfile(
+        @Header("Authorization") token : String,
+        @Part image : MultipartBody.Part
+    ) :Call<WrappedResponse<Driver>>
 }

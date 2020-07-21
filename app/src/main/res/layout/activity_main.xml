@@ -1,26 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity">
+    tools:context=".ui.main.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/screen_container"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="56dp"
-        android:layout_width="match_parent" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_gravity="bottom"
+    <com.github.florent37.shapeofview.shapes.RoundRectView
+        android:id="@+id/shape_of_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:labelVisibilityMode="labeled"
-        android:background="?android:attr/windowBackground"
-        app:menu="@menu/bottom_nav_menu" />
+        android:layout_height="400dp"
+        app:shape_roundRect_bottomLeftRadius="10dp"
+        app:shape_roundRect_bottomRightRadius="10dp">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <FrameLayout
+            android:background="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+    </com.github.florent37.shapeofview.shapes.RoundRectView>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_profile"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_above="@id/card_schedulle"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_margin="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_user"
+                android:src="@drawable/undraw_male_avatar_323b"
+                android:layout_width="91dp"
+                android:layout_height="91dp" />
+
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@id/img_user"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:text="helfanza"
+                    android:id="@+id/txt_name"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:text="helfanza"
+                    android:id="@+id/txt_email"
+                    android:textSize="20sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:elevation="2dp"
+        android:layout_centerInParent="true"
+        android:layout_margin="8dp"
+        android:id="@+id/card_schedulle"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/linear_schedulle"
+            android:layout_margin="8dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="Jadwal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/txt_date"
+                android:layout_marginBottom="10dp"
+                android:textSize="20sp"
+                android:text="Tanggal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/txt_hour"
+                android:layout_marginBottom="10dp"
+                android:textSize="20sp"
+                android:text="Jam"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/txt_schedulle"
+                android:layout_marginBottom="10dp"
+                android:textSize="20sp"
+                android:text="Keberangkatan "
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/txt_total_user"
+                android:textSize="20sp"
+                android:text="Total Penumpang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_dont_schedulle"
+            android:layout_margin="8dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:gravity=""
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="Jadwal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_marginBottom="10dp"
+                android:textSize="20sp"
+                android:text="Belum Ada Jadwal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:src="@drawable/undraw_feeling_blue_4b7q"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:elevation="2dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/card_maps"
+        android:layout_below="@id/card_schedulle"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_margin="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_maps"
+                android:src="@drawable/undraw_destinations_fpv7"
+                android:layout_width="91dp"
+                android:layout_height="91dp"/>
+
+            <TextView
+                android:layout_marginStart="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/img_maps"
+                android:text="Maps dan Semua Pesanan"
+                android:id="@+id/txt_maps"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

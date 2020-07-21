@@ -3,10 +3,12 @@ package com.travelme.driver
 import android.app.Application
 import com.travelme.driver.activities.login.LoginViewModel
 import com.travelme.driver.fragments.home.OrderFragmentViewModel
-import com.travelme.driver.fragments.maps.MapsViewModel
-import com.travelme.driver.fragments.profile.ProfileViewModel
 import com.travelme.driver.repositories.DriverRepository
 import com.travelme.driver.repositories.OrderRepository
+import com.travelme.driver.ui.main.MainViewModel
+import com.travelme.driver.ui.maps.MapsViewModel
+import com.travelme.driver.ui.profile.ProfileViewModel
+import com.travelme.driver.ui.update_profile.UpdateProfilViewModel
 import com.travelme.driver.webservices.ApiClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -36,6 +38,8 @@ val repositoryModules = module {
 val viewModelModules = module {
     viewModel { OrderFragmentViewModel(get()) }
     viewModel { LoginViewModel(get()) }
-    viewModel { ProfileViewModel(get()) }
+    viewModel { ProfileViewModel(get(), get()) }
     viewModel { MapsViewModel(get()) }
+    viewModel { MainViewModel(get(), get()) }
+    viewModel { UpdateProfilViewModel(get()) }
 }

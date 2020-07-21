@@ -28,14 +28,14 @@ class OrderFragmentViewModel (private val orderRepository: OrderRepository) : Vi
 
     fun getOrder(token : String){
         setLoading()
-        orderRepository.getOrder(token){resultOrder, error ->
-            hideLoading()
-            error?.let { it.message?.let { message->toast(message) } }
-            resultOrder?.let {
-                order.postValue(it)
-                println(it)
-            }
-        }
+//        orderRepository.getOrder(token){resultOrder, error ->
+//            hideLoading()
+//            error?.let { it.message?.let { message->toast(message) } }
+//            resultOrder?.let {
+//                order.postValue(it)
+//                println(it)
+//            }
+//        }
     }
 
     fun listenToOrders() = orders
