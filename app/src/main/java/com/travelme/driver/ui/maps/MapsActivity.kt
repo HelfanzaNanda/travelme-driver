@@ -29,13 +29,11 @@ import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
-import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager
 import com.mapbox.mapboxsdk.plugins.markerview.MarkerView
 import com.mapbox.mapboxsdk.plugins.markerview.MarkerViewManager
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
-import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute
 import com.travelme.driver.R
 import com.travelme.driver.extensions.gone
 import com.travelme.driver.extensions.visible
@@ -72,6 +70,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, PermissionsListene
         mapsViewModel.listenToState().observer(this, Observer { handleState(it) })
         mapView.getMapAsync(this)
         BottomSheetBehavior.from(layoutBottomSheet)
+        //sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED;
     }
 
     private fun handleState(it : MapsState){
@@ -124,6 +123,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, PermissionsListene
 //            symbols.add(symbolArray.valueAt(i))
 //        }
 //        symbolManager.delete(symbols)
+
+        rv_bottom_sheet.adapter?.let { adapter ->
+            if (adapter is BottomSheetMapsAdapter){
+                adapter.changelist(it)
+            }
+        }
+
         it.forEach { order ->
             println(order.arrived)
             addMarker(LatLng(order.lat_pickup_point!!.toDouble(), order.lng_pickup_point!!.toDouble()), order, order.pickup_point!!)
@@ -157,11 +163,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, PermissionsListene
 //                }
 //            }
         }
-        rv_bottom_sheet.adapter?.let {adapter ->
-            if (adapter is com.travelme.driver.fragments.maps.BottomSheetMapsAdapter){
-                adapter.changelist(it)
-            }
-        }
+//        rv_bottom_sheet.adapter?.let {adapter ->
+//            if (adapter is BottomSheetMapsAdapter){
+//                adapter.changelist(it)
+//            }
+//        }
     }
 
     private fun getScreenInfo() : android.graphics.Point{

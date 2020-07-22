@@ -33,25 +33,6 @@ class ProfileViewModel (private val driverRepository: DriverRepository,
         })
     }
 
-    fun domicile(token: String){
-        setLoading()
-        driverRepository.domicile(token){resultDriver, error ->
-            hideLoading()
-            error?.let { it.message?.let { message->toast(message) } }
-            resultDriver?.let { profile(token) }
-        }
-    }
-
-
-    fun goOff(token: String){
-        setLoading()
-        driverRepository.goOff(token){resultDriver, error ->
-            hideLoading()
-            error?.let { it.message?.let { message->toast(message) } }
-            resultDriver?.let { profile(token) }
-        }
-    }
-
     fun fetchSchedulle(token: String){
         setLoading()
         orderRepository.fetchSchedulle(token, object : SingleResponse<OrderForSchedulle>{
@@ -67,6 +48,22 @@ class ProfileViewModel (private val driverRepository: DriverRepository,
         })
     }
 
+    fun setLocation(token : String, loc : String){
+        setLoading()
+        driverRepository.setLocation(token, loc, object : SingleResponse<Driver>{
+            override fun onSuccess(data: Driver?) {
+                hideLoading()
+                data?.let { state.value = ProfileState.Success }
+            }
+
+            override fun onFailure(err: Error?) {
+                hideLoading()
+                err?.let { it.message.toString() }
+            }
+
+        })
+    }
+
     fun listenToState() = state
     fun listenToDriver() = driver
     fun listenToFetchShedulle() = orderForSchedulle
@@ -75,4 +72,5 @@ class ProfileViewModel (private val driverRepository: DriverRepository,
 sealed class ProfileState{
     data class IsLoading(var state : Boolean = false) : ProfileState()
     data class ShowToast(var message : String) : ProfileState()
+    object Success : ProfileState()
 }

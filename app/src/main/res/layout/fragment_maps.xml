@@ -16,35 +16,35 @@
 
     <include layout="@layout/bottom_sheet_maps"/>
 
-    <LinearLayout
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="40dp"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+<!--    <LinearLayout-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        android:layout_marginBottom="40dp"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
 
-        <com.google.android.material.button.MaterialButton
-            android:visibility="gone"
-            android:enabled="false"
-            android:background="@color/mapboxGrayLight"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:text="mulai navigasi"
-            android:id="@+id/btn_start_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:visibility="gone"-->
+<!--            android:enabled="false"-->
+<!--            android:background="@color/mapboxGrayLight"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="mulai navigasi"-->
+<!--            android:id="@+id/btn_start_navigation"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"/>-->
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
 
-            android:id="@+id/my_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_my_location"
-            tools:ignore="RtlHardcoded" />
+<!--            android:id="@+id/my_location"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:srcCompat="@drawable/ic_my_location"-->
+<!--            tools:ignore="RtlHardcoded" />-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -212,8 +212,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                         println("current route : ${response.body()!!.routes().get(0)}")
 
                         currentRoute = response.body()!!.routes().get(0)
-                        //btn_start_navigation.isEnabled = true
-                        btn_start_navigation.setBackgroundResource(R.color.mapboxBlue)
+                        //btn_start_navigation.isEnabled = true //btn_start_navigation.setBackgroundResource(R.color.mapboxBlue)
 
                         if (navigationMapRoute != null){
                             navigationMapRoute!!.removeRoute()
@@ -314,10 +313,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             locationComponent!!.isLocationComponentEnabled = true
             locationComponent!!.cameraMode = CameraMode.TRACKING
             locationComponent!!.renderMode = RenderMode.COMPASS
-            my_location.setOnClickListener {
-                locationComponent!!.cameraMode = CameraMode.TRACKING
-                locationComponent!!.zoomWhileTracking(16.0)
-            }
+//            my_location.setOnClickListener {
+//                locationComponent!!.cameraMode = CameraMode.TRACKING
+//                locationComponent!!.zoomWhileTracking(16.0)
+//            }
         } else {
             permissionsManager = PermissionsManager(this)
             permissionsManager!!.requestLocationPermissions(requireActivity())

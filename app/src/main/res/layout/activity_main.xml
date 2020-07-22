@@ -28,7 +28,6 @@
         android:id="@+id/card_profile"
         android:clickable="true"
         android:focusable="true"
-        android:layout_above="@id/card_schedulle"
         android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

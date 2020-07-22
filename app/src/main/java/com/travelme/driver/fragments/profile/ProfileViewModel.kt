@@ -14,34 +14,6 @@ class ProfileViewModel (private val driverRepository: DriverRepository) : ViewMo
     private fun hideLoading() { state.value = ProfileState.IsLoading(false) }
     private fun toast(message: String) { state.value = ProfileState.ShowToast(message) }
 
-    fun profile(token : String){
-//        setLoading()
-//        driverRepository.profile(token){resultDriver, error->
-//            hideLoading()
-//            error?.let { it.message?.let { message-> toast(message) }}
-//            resultDriver?.let { driver.postValue(it) }
-//        }
-    }
-
-    fun domicile(token: String){
-        setLoading()
-        driverRepository.domicile(token){resultDriver, error ->
-            hideLoading()
-            error?.let { it.message?.let { message->toast(message) } }
-            resultDriver?.let { profile(token) }
-        }
-    }
-
-
-    fun goOff(token: String){
-        setLoading()
-        driverRepository.goOff(token){resultDriver, error ->
-            hideLoading()
-            error?.let { it.message?.let { message->toast(message) } }
-            resultDriver?.let { profile(token) }
-        }
-    }
-
     fun listenToState() = state
     fun listenToDriver() = driver
 }

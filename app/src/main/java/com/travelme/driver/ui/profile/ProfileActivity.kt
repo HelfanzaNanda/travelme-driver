@@ -30,7 +30,7 @@ class ProfileActivity : AppCompatActivity() {
         supportActionBar?.hide()
         profileViewModel.listenToState().observer(this, Observer { handleUI(it) })
         profileViewModel.listenToDriver().observe(this, Observer { handleDriver(it) })
-
+        profileViewModel.listenToFetchShedulle().observe(this, Observer { handleSchedulle(it) })
         logout()
 
     }
@@ -41,14 +41,12 @@ class ProfileActivity : AppCompatActivity() {
             btn_domicile.setOnClickListener {popup("belum memiliki jadwal")}
         }else{
             if (it.departure!!.from.equals(loc)){
-                btn_domicile.setOnClickListener {
-                    profileViewModel.goOff(Constants.getToken(this@ProfileActivity))
+                btn_domicile.isEnabled = true
+                btn_domicile.setOnClickListener {_->
+                    profileViewModel.setLocation(Constants.getToken(this@ProfileActivity), it.departure!!.destination!!)
                 }
             }
         }
-        //println(it.departure!!.from!!)
-        //loc = it.departure!!.from!!
-        //btn_domicile.isEnabled = true
     }
 
     private fun popup(message: String){
@@ -70,6 +68,11 @@ class ProfileActivity : AppCompatActivity() {
                 }
             }
             is ProfileState.ShowToast -> toast(it.message)
+            is ProfileState.Success -> {
+                toast("anda mau berangkat")
+                profileViewModel.profile(Constants.getToken(this@ProfileActivity))
+                profileViewModel.fetchSchedulle(Constants.getToken(this@ProfileActivity))
+            }
         }
     }
 
@@ -89,7 +92,6 @@ class ProfileActivity : AppCompatActivity() {
         txt_telp.text = it.telp
         txt_domicile.text = "saya berada di ${it.location}"
         loc = it.location!!
-        profileViewModel.listenToFetchShedulle().observe(this, Observer { handleSchedulle(it) })
 
         btn_edit_profile.setOnClickListener { _-> startActivity(Intent(this, UpdateProfileActivity::class.java).apply {
             putExtra("DRIVER", it)

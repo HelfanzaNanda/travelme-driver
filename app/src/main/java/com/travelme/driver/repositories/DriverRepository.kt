@@ -17,9 +17,11 @@ interface DriverContract{
     fun profile(token: String, listener : SingleResponse<Driver>)
     fun updateProfil(token: String, name : String, password: String, listener: SingleResponse<Driver>)
     fun updatePhotoProfil(token: String, imgUrl : String, listener: SingleResponse<Driver>)
+    fun setLocation(token: String, loc : String, listener: SingleResponse<Driver>)
 }
 
 class DriverRepository (private val api : ApiService) : DriverContract{
+
     override fun updatePhotoProfil(token: String, imgUrl: String, listener: SingleResponse<Driver>) {
         val file = File(imgUrl)
         val requestBodyForFile = RequestBody.create(MediaType.parse("image/*"), file)
@@ -109,44 +111,16 @@ class DriverRepository (private val api : ApiService) : DriverContract{
         })
     }
 
-    fun domicile(token : String, result: (Driver?, Error?) -> Unit){
-        api.domicile(token).enqueue(object : Callback<WrappedResponse<Driver>>{
+    override fun setLocation(token: String, loc: String, listener: SingleResponse<Driver>) {
+        api.setLocation(token, loc).enqueue(object : Callback<WrappedResponse<Driver>>{
             override fun onFailure(call: Call<WrappedResponse<Driver>>, t: Throwable) {
-                result(null, Error(t.message))
+                listener.onFailure(Error(t.message))
             }
 
             override fun onResponse(call: Call<WrappedResponse<Driver>>, response: Response<WrappedResponse<Driver>>) {
-                if (response.isSuccessful){
-                    val body = response.body()
-                    if (body?.status!!){
-                        result(body.data, null)
-                    }else{
-                        result(null, Error(body.message))
-                    }
-                }else{
-                    result(null, Error(response.message()))
-                }
-            }
-
-        })
-    }
-
-    fun goOff(token : String, result: (Driver?, Error?) -> Unit){
-        api.goOff(token).enqueue(object : Callback<WrappedResponse<Driver>>{
-            override fun onFailure(call: Call<WrappedResponse<Driver>>, t: Throwable) {
-                result(null, Error(t.message))
-            }
-
-            override fun onResponse(call: Call<WrappedResponse<Driver>>, response: Response<WrappedResponse<Driver>>) {
-                if (response.isSuccessful){
-                    val body = response.body()
-                    if (body?.status!!){
-                        result(body.data, null)
-                    }else{
-                        result(null, Error(body.message))
-                    }
-                }else{
-                    result(null, Error(response.message()))
+                when {
+                    response.isSuccessful -> listener.onSuccess(response.body()!!.data)
+                    !response.isSuccessful -> listener.onFailure(Error(response.message()))
                 }
             }
 

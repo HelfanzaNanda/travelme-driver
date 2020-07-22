@@ -73,7 +73,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile){
 
     override fun onResume() {
         super.onResume()
-        profileViewModel.profile(Constants.getToken(requireActivity()))
+        //profileViewModel.profile(Constants.getToken(requireActivity()))
     }
 
     private fun toast(message: String) { Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show() }

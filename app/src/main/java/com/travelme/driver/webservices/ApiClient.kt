@@ -78,14 +78,10 @@ interface ApiService{
         @Header("Authorization") token : String
     ) : Call<WrappedResponse<Driver>>
 
-    @GET("driver/domicile")
-    fun domicile(
-        @Header("Authorization") token : String
-    ) : Call<WrappedResponse<Driver>>
-
-    @GET("driver/gooff")
-    fun goOff(
-        @Header("Authorization") token : String
+    @GET("driver/location/{location}")
+    fun setLocation(
+        @Header("Authorization") token : String,
+        @Path("location") loc : String
     ) : Call<WrappedResponse<Driver>>
 
     @FormUrlEncoded

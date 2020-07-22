@@ -16,6 +16,7 @@
         mapbox:mapbox_cameraZoom="0.346515" />
 
     <include layout="@layout/bottom_sheet_maps"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="40dp"
