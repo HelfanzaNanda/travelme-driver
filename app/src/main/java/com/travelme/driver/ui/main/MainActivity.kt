@@ -8,20 +8,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import coil.api.load
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.travelme.driver.R
 import com.travelme.driver.extensions.gone
 import com.travelme.driver.extensions.visible
-import com.travelme.driver.fragments.home.HomeFragment
-import com.travelme.driver.fragments.profile.ProfileFragment
-import com.travelme.driver.fragments.maps.MapsFragment
 import com.travelme.driver.models.Driver
 import com.travelme.driver.models.OrderForSchedulle
 import com.travelme.driver.ui.maps.MapsActivity
 import com.travelme.driver.ui.profile.ProfileActivity
 import com.travelme.driver.utilities.Constants
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.linear_schedulle
+import kotlinx.android.synthetic.main.activity_main.txt_date
+import kotlinx.android.synthetic.main.activity_main.txt_hour
+import kotlinx.android.synthetic.main.activity_main.txt_total_user
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -61,7 +59,7 @@ class MainActivity : AppCompatActivity() {
             linear_schedulle.visible()
             txt_date.text = "${it.date}"
             txt_hour.text = "${it.hour} WIB"
-            txt_schedulle.text = "${it.departure!!.from} -> ${it.departure!!.destination}"
+            txt_departure.text = "${it.departure!!.from} -> ${it.departure!!.destination}"
             txt_total_user.text = "${it.total_user} Orang"
         }
     }

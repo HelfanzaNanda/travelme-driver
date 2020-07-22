@@ -23,8 +23,16 @@
         </FrameLayout>
     </com.github.florent37.shapeofview.shapes.RoundRectView>
 
+    <ImageView
+        android:id="@+id/img_logo"
+        android:scaleType="fitCenter"
+        android:src="@drawable/travelme"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
 
     <com.google.android.material.card.MaterialCardView
+        android:layout_below="@id/img_logo"
         android:id="@+id/card_profile"
         android:clickable="true"
         android:focusable="true"
@@ -82,51 +90,87 @@
         android:layout_height="200dp">
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/linear_schedulle"
+            android:visibility="gone"
             android:layout_margin="8dp"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_marginBottom="10dp"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:text="Jadwal"
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/txt_date"
-                android:layout_marginBottom="10dp"
-                android:textSize="20sp"
-                android:text="Tanggal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_marginBottom="10dp"
+                    android:textSize="20sp"
+                    android:text="Tanggal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <TextView
-                android:id="@+id/txt_hour"
-                android:layout_marginBottom="10dp"
-                android:textSize="20sp"
-                android:text="Jam"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_marginBottom="10dp"
+                    android:textSize="20sp"
+                    android:text="Jam"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <TextView
-                android:id="@+id/txt_schedulle"
-                android:layout_marginBottom="10dp"
-                android:textSize="20sp"
-                android:text="Keberangkatan "
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_marginBottom="10dp"
+                    android:textSize="20sp"
+                    android:text="Keberangkatan "
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <TextView
-                android:id="@+id/txt_total_user"
-                android:textSize="20sp"
-                android:text="Total Penumpang"
+                <TextView
+                    android:textSize="20sp"
+                    android:text="Total Penumpang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_date"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="20sp"
+                    android:text="Berangkat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/txt_hour"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="20sp"
+                    android:text="Berangkat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/txt_departure"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="20sp"
+                    android:text="Keberangkatan "
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/txt_total_user"
+                    android:textSize="20sp"
+                    android:text="Total Penumpang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
